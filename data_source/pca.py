@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-06 14:42:30
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-07 00:00:50
+# @Last Modified time: 2020-07-07 11:22:08
 
 import pandas as pd
 import numpy as np
@@ -74,6 +74,8 @@ if __name__ == '__main__':
 	df.to_pickle('temp.pkl')
 	df = fixData(df)
 	
+	df = df.head(100)
+
 	ppca = PPCA()
 	print (time.ctime())
 	ppca.fit(df.values.astype(float), d=16,verbose=True)
