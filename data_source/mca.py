@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-06 10:33:24
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-06 14:46:15
+# @Last Modified time: 2020-07-07 00:27:53
 
 '''
 Multiple correspondence analysis is only applied to the 
@@ -17,6 +17,7 @@ import prince
 import itertools
 from sklearn.preprocessing import OneHotEncoder
 import matplotlib.pyplot as plt
+import time
 
 def generateOneHotEncoding(arr, name, categories):
 	return dict((name+i, i in arr) for i in categories)
@@ -72,10 +73,11 @@ if __name__ == '__main__':
 
 	df = fillMissing(df)
 	df = df.head(100)
-	
 	#Multiple Correspondence analysis
 	mca = prince.MCA(n_components=16,n_iter=20,copy=True,check_input=True,engine='auto',)
+	print(time.ctime())
 	mca.fit(df)
+	print(time.ctime())
 	
 	transformed = mca.transform(df)
 	transformed.to_csv('../data/mca.csv',index=True,index_label='idx')

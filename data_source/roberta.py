@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-05 16:26:15
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-06 12:12:47
+# @Last Modified time: 2020-07-07 00:02:56
 
 import torch
 import torch.nn as nn
@@ -11,6 +11,7 @@ import json
 import pandas as pd
 import numpy as np
 from fairseq.data.data_utils import collate_tokens
+import time
 
 batch_size = 4
 
@@ -56,13 +57,11 @@ if __name__ == '__main__':
 	plots = list(get_batch(plots, batch_size))
 	ids = list(get_batch(ids, batch_size))
 	
+	print(time.ctime())
 	features = {} 
-	count = 0
 	for batch, ids in zip(plots[::-1], ids[::-1]):
-		if count > 3:
-			break
 		extract_features(batch, ids, features)
-		count+=1
+	print(time.ctime())
 
 	roberta_data = pd.DataFrame(features).T
 	roberta_data.index = roberta_data.index.astype(int)
