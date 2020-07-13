@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-06 10:33:24
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-07 12:38:43
+# @Last Modified time: 2020-07-12 14:39:08
 
 '''
 Multiple correspondence analysis is only applied to the 
@@ -72,7 +72,8 @@ if __name__ == '__main__':
 	df = pd.DataFrame.from_dict(extracted_features).T
 
 	df = fillMissing(df)
-	df = df.head(6000)
+	# df = df.head(6000)
+	
 	#Multiple Correspondence analysis
 	mca = prince.MCA(n_components=16,n_iter=20,copy=True,check_input=True,engine='auto',)
 	print(time.ctime())

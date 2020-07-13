@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-12 14:58:57
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-12 23:13:04
+# @Last Modified time: 2020-07-13 14:39:26
 
 import torch
 import pandas as pd
@@ -39,30 +39,30 @@ def createDataTensor(data):
 
 
 def createBatchTensor(batch, embeddings_tensor, frame_size):
-	items, ratings, sizes, users =  batch['items'], batch['ratings'], batch['sizes'], batch['users']
-   
-	items_emb = embeddings_tensor[items.long()]
-   
-	b_size = ratings.size(0)
+	items_t, ratings_t, sizes_t, users_t = batch['items'], batch['ratings'], batch['sizes'], batch['users']
+	items_emb = embeddings_tensor[items_t.long()]
+	b_size = ratings_t.size(0)
 
 	items = items_emb[:, :-1, :].view(b_size, -1)
 	next_items = items_emb[:, 1:, :].view(b_size, -1)
-	ratings = ratings[:, :-1]
-	next_ratings = ratings[:, 1:]
+	ratings = ratings_t[:, :-1]
+	next_ratings = ratings_t[:, 1:]
+
+	# print(next_ratings[1])
+	# print(items.shape, next_items.shape, ratings.shape, next_ratings.shape)
+
 
 	state = torch.cat([items, ratings], 1)
 	next_state = torch.cat([next_items, next_ratings], 1)
 	action = items_emb[:, -1, :]
-	reward = ratings[:, -1]
+	reward = ratings_t[:, -1]
 
 	done = torch.zeros(b_size)
-	done[torch.cumsum(sizes - frame_size, dim=0) - 1] = 1
+	done[torch.cumsum(sizes_t - frame_size, dim=0) - 1] = 1
 
 	batch = {'state': state, 'action': action, 'reward': reward, 'next_state': next_state, 'done': done,
-			 'meta': {'users': users, 'sizes': sizes}}
-	
-	print(batch['reward'])
-
+			 'meta': {'users': users_t, 'sizes': sizes_t}}
+	# print('\n')
 	return batch
 
 
