@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-12 14:44:07
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-13 12:38:31
+# @Last Modified time: 2020-07-21 13:46:38
 
 
 import torch
@@ -94,5 +94,5 @@ class FrameEnvironment(Environment):
 if __name__ == '__main__':
 	test = FrameEnvironment('../data/ml20_pca128.pkl','../data/ml-20m/ratings.csv')
 	x = test.train_batch()
-	print(x['next_state'].shape)
+	print(x)
 

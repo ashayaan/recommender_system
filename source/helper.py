@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-12 14:58:57
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-13 14:39:26
+# @Last Modified time: 2020-07-21 15:35:27
 
 import torch
 import pandas as pd
@@ -42,7 +42,7 @@ def createBatchTensor(batch, embeddings_tensor, frame_size):
 	items_t, ratings_t, sizes_t, users_t = batch['items'], batch['ratings'], batch['sizes'], batch['users']
 	items_emb = embeddings_tensor[items_t.long()]
 	b_size = ratings_t.size(0)
-
+	# print(ratings_t)
 	items = items_emb[:, :-1, :].view(b_size, -1)
 	next_items = items_emb[:, 1:, :].view(b_size, -1)
 	ratings = ratings_t[:, :-1]

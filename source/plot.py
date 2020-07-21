@@ -73,7 +73,7 @@ class Plotter:
                                self.loss['test'][key], 'r-.',
                                label='test')
             plt.legend()
-        plt.savefig('../runs/step_'+str(self.loss['train']['step'][-1]+1) )
+        plt.savefig('../temp/step_'+str(self.loss['train']['step'][-1]+1) )
 
     def log_loss(self, key, item, test=False):
         kind = 'train'

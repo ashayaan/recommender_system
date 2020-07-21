@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-13 10:30:21
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-13 15:34:56
+# @Last Modified time: 2020-07-21 15:47:08
 
 import torch
 import torch.nn as nn
@@ -21,7 +21,7 @@ from plot import Plotter, pairwise_distances_fig, pairwise_distances, smooth\
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 #Global variables
-writer = SummaryWriter(log_dir='../runs')
+writer = SummaryWriter(log_dir='../temp')
 debug = {}
 
 def softUpdate(net, target_net, soft_tau=1e-2):
@@ -72,12 +72,13 @@ def ddpg(value_net, policy_net, target_value_net, target_policy_net, value_optim
 	with torch.no_grad():
 		next_action = target_policy_net(next_state)
 		target_value   = target_value_net(next_state, next_action.detach())
+		#Using the mean squared Bellman equation to get expected reward
 		expected_value = reward + (1.0 - done) * params['gamma'] * target_value
-		expected_value = torch.clamp(expected_value,
-									 params['min_value'], params['max_value'])
+		expected_value = torch.clamp(expected_value,params['min_value'], params['max_value'])
 
 	value = value_net(state, action)
 	
+	#How far the value is from the optimal policy
 	value_loss = torch.pow(value - expected_value.detach(), 2).mean()
 	
 	if learn:
@@ -86,8 +87,7 @@ def ddpg(value_net, policy_net, target_value_net, target_policy_net, value_optim
 		value_optimizer.step()
 	else:
 		debug['next_action'] = next_action
-		writer.add_figure('next_action',
-					pairwise_distances_fig(next_action[:50]), step)
+		writer.add_figure('next_action',pairwise_distances_fig(next_action[:50]), step)
 		writer.add_histogram('value', value, step)
 		writer.add_histogram('target_value', target_value, step)
 		writer.add_histogram('expected_value', expected_value, step)
@@ -155,6 +155,7 @@ def train(env):
 			loss, value_net, policy_net, target_value_net, target_policy_net, value_optimizer, policy_optimizer\
 			 = ddpg(value_net,policy_net,target_value_net,target_policy_net,\
 					value_optimizer, policy_optimizer, batch, params, step=step)
+			# print(loss)
 			plotter.log_losses(loss)
 			step += 1
 			if step % plot_every == 0:
@@ -163,7 +164,7 @@ def train(env):
 					value_optimizer, policy_optimizer,plotter)
 				plotter.log_losses(test_loss, test=True)
 				plotter.plot_loss()
-			if step > 1000:
+			if step > 1500:
 				assert False
 
 

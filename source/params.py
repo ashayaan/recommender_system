@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-05 15:19:03
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-13 11:48:28
+# @Last Modified time: 2020-07-21 16:18:25
 
 
 '''
@@ -19,5 +19,5 @@ params = {
     'policy_lr'  : 1e-5,
     'value_lr'   : 1e-5,
     'actor_weight_init': 5e-2,
-    'critic_weight_init': 6e-1,
+    'critic_weight_init': 5e-2,
 }
