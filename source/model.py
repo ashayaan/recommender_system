@@ -2,12 +2,38 @@
 # @Author: ashayaan
 # @Date:   2020-07-05 15:11:20
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-13 14:31:52
+# @Last Modified time: 2020-08-18 10:54:49
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
+class AnomalyDetector(nn.Module):
+    def __init__(self):
+        super(AnomalyDetector, self).__init__()
+        self.ae = nn.Sequential(
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.BatchNorm1d(64),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.BatchNorm1d(32),
+            nn.Linear(32, 64),
+            nn.ReLU(),
+            nn.BatchNorm1d(64),
+            nn.Linear(64, 128),
+            nn.ReLU(),
+        )
+        
+    def forward(self, x):
+        return self.ae(x)
+    
+    def rec_error(self, x):
+        error = torch.sum((x - self.ae(x)) ** 2, 1)
+        if x.size(1) != 1:
+            return error.detach()
+        return error.item()
 
 class Actor(nn.Module):
 	"""docstring for Actor"""

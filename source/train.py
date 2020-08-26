@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-13 10:30:21
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-21 15:47:08
+# @Last Modified time: 2020-07-28 13:29:17
 
 import torch
 import torch.nn as nn
@@ -23,6 +23,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 #Global variables
 writer = SummaryWriter(log_dir='../temp')
 debug = {}
+
+
 
 def softUpdate(net, target_net, soft_tau=1e-2):
 	for target_param, param in zip(target_net.parameters(), net.parameters()):
@@ -130,8 +132,6 @@ def train(env):
 	policy_net = Actor(1290, 128, 256, params['actor_weight_init']).to(device)
 	target_value_net = Critic(1290, 128, 256).to(device)
 	target_policy_net = Actor(1290, 128, 256).to(device)
-
-
 
 	#Switiching off dropout layers
 	target_value_net.eval()

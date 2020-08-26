@@ -110,5 +110,7 @@ class Plotter:
     @staticmethod
     def plot_kde_reconstruction_error(*args, **kwargs):
         fig = Plotter.kde_reconstruction_error(*args, **kwargs)
+        fig.savefig('dist')
         fig.show()
+
 

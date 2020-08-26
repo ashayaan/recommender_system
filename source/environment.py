@@ -2,7 +2,7 @@
 # @Author: ashayaan
 # @Date:   2020-07-12 14:44:07
 # @Last Modified by:   ashayaan
-# @Last Modified time: 2020-07-21 13:46:38
+# @Last Modified time: 2020-07-28 13:13:22
 
 
 import torch
@@ -64,8 +64,8 @@ class Environment(object):
 
 class FrameEnvironment(Environment):
 	"""docstring for FrameEnvironment"""
-	def __init__(self, embeddings, ratings, frame_size=10, batch_size=25, num_workers=1):
-		super(FrameEnvironment, self).__init__(embeddings, ratings, min_seq_size=frame_size+1)
+	def __init__(self, embeddings, ratings, frame_size=10, batch_size=25, num_workers=1,*args, **kwargs):
+		super(FrameEnvironment, self).__init__(embeddings, ratings, min_seq_size=frame_size+1,*args, **kwargs)
 		
 		def prepareBatchCalls(x):
 			batch = batchStatistics(x, self.embeddings,embed_batch=self.embed_batch,frame_size=frame_size)
